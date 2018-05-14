@@ -798,30 +798,6 @@ describe('WebSocketAwait', () => {
                             throw new Error('Test');
                         },
                     });
-                    ws.onopen = async () => {
-                        try {
-                            await ws.sendAwait(testData.default);
-                        } catch (err) {
-                            assert.strictEqual(ws.waitingReplies.size, 0);
-                            assert.strictEqual(Object.keys(ws.resolvesObj).length, 0);
-                            assert.strictEqual(Object.keys(ws.rejectsObj).length, 0);
-                            assert.strictEqual(Object.keys(ws.timeoutsObj).length, 0);
-                            assert.strictEqual(err.message, 'The message is not received: Test');
-                            wss.close(done);
-                        }
-                    };
-                });
-        });
-        it('sendAwait with data {Object} and error in attachAwaitId using then, catch', done => {
-            const wss = new WebSocketAwait.Server(
-                {port: 0},
-                () => {
-                    const ws = new WebSocketAwait(`ws://localhost:${wss.address().port}`);
-                    ws.setSettings({
-                        attachAwaitId: () => {
-                            throw new Error('Test');
-                        },
-                    });
                     ws.onopen = () => {
                         ws.sendAwait(testData.default)
                             .catch(err => {
@@ -843,28 +819,6 @@ describe('WebSocketAwait', () => {
                     ws.setSettings({
                         awaitTimeout: 0,
                     });
-                    ws.onopen = async () => {
-                        try {
-                            await ws.sendAwait(testData.default);
-                        } catch (err) {
-                            assert.strictEqual(ws.waitingReplies.size, 0);
-                            assert.strictEqual(Object.keys(ws.resolvesObj).length, 0);
-                            assert.strictEqual(Object.keys(ws.rejectsObj).length, 0);
-                            assert.strictEqual(Object.keys(ws.timeoutsObj).length, 0);
-                            assert.strictEqual(err.message, 'The message is not received: Response timeout expired');
-                            wss.close(done);
-                        }
-                    };
-                });
-        });
-        it('sendAwait with data {Object} and timeout error using then, catch', done => {
-            const wss = new WebSocketAwait.Server(
-                {port: 0},
-                () => {
-                    const ws = new WebSocketAwait(`ws://localhost:${wss.address().port}`);
-                    ws.setSettings({
-                        awaitTimeout: 0,
-                    });
                     ws.onopen = () => {
                         ws.sendAwait(testData.default)
                             .catch(err => {
@@ -879,24 +833,6 @@ describe('WebSocketAwait', () => {
                 });
         });
         it('sendAwait with data {Object} and with WebSocket is not open', done => {
-            const ws = new WebSocketAwait('ws://localhost', {
-                agent: new CustomAgent()
-            });
-
-            (async () => {
-                try {
-                    await ws.sendAwait(testData.default);
-                } catch (err) {
-                    assert.strictEqual(ws.waitingReplies.size, 0);
-                    assert.strictEqual(Object.keys(ws.resolvesObj).length, 0);
-                    assert.strictEqual(Object.keys(ws.rejectsObj).length, 0);
-                    assert.strictEqual(Object.keys(ws.timeoutsObj).length, 0);
-                    assert.strictEqual(err.message, 'The message is not received: WebSocket is not open: readyState 0 (CONNECTING)');
-                    done();
-                }
-            })();
-        });
-        it('sendAwait with data {Object} and with WebSocket is not open using then, catch', done => {
             const ws = new WebSocketAwait('ws://localhost', {
                 agent: new CustomAgent()
             });
@@ -923,18 +859,19 @@ describe('WebSocketAwait', () => {
                         });
                     });
                     const ws = new WebSocketAwait(`ws://localhost:${wss.address().port}`);
-                    ws.onopen = async () => {
-                        try {
-                            const waiting = await ws.sendAwait(testData.default);
-                            assert.deepStrictEqual(waiting, testData.default);
-                            assert.strictEqual(ws.waitingReplies.size, 0);
-                            assert.strictEqual(Object.keys(ws.resolvesObj).length, 0);
-                            assert.strictEqual(Object.keys(ws.rejectsObj).length, 0);
-                            assert.strictEqual(Object.keys(ws.timeoutsObj).length, 0);
-                            wss.close(done);
-                        } catch (err) {
-                            throw new Error(`This test without Errors: ${err}`);
-                        }
+                    ws.onopen = () => {
+                        ws.sendAwait(testData.default)
+                            .then(waiting => {
+                                assert.deepStrictEqual(waiting, testData.default);
+                                assert.strictEqual(ws.waitingReplies.size, 0);
+                                assert.strictEqual(Object.keys(ws.resolvesObj).length, 0);
+                                assert.strictEqual(Object.keys(ws.rejectsObj).length, 0);
+                                assert.strictEqual(Object.keys(ws.timeoutsObj).length, 0);
+                                wss.close(done);
+                            })
+                            .catch(err => {
+                                throw new Error(`This test without Errors: ${err}`);
+                            });
                     };
                 });
         });
@@ -959,21 +896,22 @@ describe('WebSocketAwait', () => {
                         nameAwaitId: 'testId',
                         leaveAwaitId: true,
                     });
-                    ws.onopen = async () => {
-                        try {
-                            const waiting = await ws.sendAwait(testData.default);
-                            assert.strictEqual(typeof waiting, 'object');
-                            assert.strictEqual(typeof waiting.testId, 'string');
-                            assert.strictEqual(typeof waiting.foo, 'number');
-                            assert.deepStrictEqual(Object.keys(waiting), ['testId', 'foo']);
-                            assert.strictEqual(ws.waitingReplies.size, 0);
-                            assert.strictEqual(Object.keys(ws.resolvesObj).length, 0);
-                            assert.strictEqual(Object.keys(ws.rejectsObj).length, 0);
-                            assert.strictEqual(Object.keys(ws.timeoutsObj).length, 0);
-                            wss.close(done);
-                        } catch (err) {
-                            throw new Error(`This test without Errors: ${err}`);
-                        }
+                    ws.onopen = () => {
+                        ws.sendAwait(testData.default)
+                            .then(waiting => {
+                                assert.strictEqual(typeof waiting, 'object');
+                                assert.strictEqual(typeof waiting.testId, 'string');
+                                assert.strictEqual(typeof waiting.foo, 'number');
+                                assert.deepStrictEqual(Object.keys(waiting), ['testId', 'foo']);
+                                assert.strictEqual(ws.waitingReplies.size, 0);
+                                assert.strictEqual(Object.keys(ws.resolvesObj).length, 0);
+                                assert.strictEqual(Object.keys(ws.rejectsObj).length, 0);
+                                assert.strictEqual(Object.keys(ws.timeoutsObj).length, 0);
+                                wss.close(done);
+                            })
+                            .catch(err => {
+                                throw new Error(`This test without Errors: ${err}`);
+                            });
                     };
                 });
         });
@@ -996,21 +934,22 @@ describe('WebSocketAwait', () => {
                     ws.setSettings({
                         leaveAwaitId: true,
                     });
-                    ws.onopen = async () => {
-                        try {
-                            const waiting = await ws.sendAwait(testData.default);
-                            assert.strictEqual(typeof waiting, 'object');
-                            assert.strictEqual(typeof waiting.awaitId, 'string');
-                            assert.strictEqual(typeof waiting.foo, 'number');
-                            assert.deepStrictEqual(Object.keys(waiting), ['awaitId', 'foo']);
-                            assert.strictEqual(ws.waitingReplies.size, 0);
-                            assert.strictEqual(Object.keys(ws.resolvesObj).length, 0);
-                            assert.strictEqual(Object.keys(ws.rejectsObj).length, 0);
-                            assert.strictEqual(Object.keys(ws.timeoutsObj).length, 0);
-                            wss.close(done);
-                        } catch (err) {
-                            throw new Error(`This test without Errors: ${err}`);
-                        }
+                    ws.onopen = () => {
+                        ws.sendAwait(testData.default)
+                            .then(waiting => {
+                                assert.strictEqual(typeof waiting, 'object');
+                                assert.strictEqual(typeof waiting.awaitId, 'string');
+                                assert.strictEqual(typeof waiting.foo, 'number');
+                                assert.deepStrictEqual(Object.keys(waiting), ['awaitId', 'foo']);
+                                assert.strictEqual(ws.waitingReplies.size, 0);
+                                assert.strictEqual(Object.keys(ws.resolvesObj).length, 0);
+                                assert.strictEqual(Object.keys(ws.rejectsObj).length, 0);
+                                assert.strictEqual(Object.keys(ws.timeoutsObj).length, 0);
+                                wss.close(done);
+                            })
+                            .catch(err => {
+                                throw new Error(`This test without Errors: ${err}`);
+                            });
                     };
                 });
         });
@@ -1029,14 +968,19 @@ describe('WebSocketAwait', () => {
                         });
                     });
                     const ws = new WebSocketAwait(`ws://localhost:${wss.address().port}`);
-                    ws.onopen = async () => {
+                    ws.onopen = () => {
                         const awaitId = ws.generateAwaitId();
-                        const status = await ws.resAwait(testData.default, awaitId);
-                        assert.strictEqual(awaitId, status);
-                        assert.strictEqual(ws.waitingReplies.size, 0);
-                        assert.strictEqual(Object.keys(ws.resolvesObj).length, 0);
-                        assert.strictEqual(Object.keys(ws.rejectsObj).length, 0);
-                        assert.strictEqual(Object.keys(ws.timeoutsObj).length, 0);
+                        ws.resAwait(testData.default, awaitId)
+                            .then(status => {
+                                assert.strictEqual(awaitId, status);
+                                assert.strictEqual(ws.waitingReplies.size, 0);
+                                assert.strictEqual(Object.keys(ws.resolvesObj).length, 0);
+                                assert.strictEqual(Object.keys(ws.rejectsObj).length, 0);
+                                assert.strictEqual(Object.keys(ws.timeoutsObj).length, 0);
+                            })
+                            .catch(err => {
+                                throw new Error(`This test without Errors: ${err}`);
+                            });
                     };
                 });
         });
@@ -1053,44 +997,25 @@ describe('WebSocketAwait', () => {
                         });
                     });
                     const ws = new WebSocketAwait(`ws://localhost:${wss.address().port}`);
-                    ws.onopen = async () => {
+                    ws.onopen = () => {
                         const awaitId = ws.generateAwaitId();
-                        const status = await ws.resAwait(testData.default, awaitId, () => {
+                        ws.resAwait(testData.default, awaitId, () => {
                             throw new Error('Callback is passed to sendAwait method')
-                        });
-                        assert.strictEqual(awaitId, status);
-                        assert.strictEqual(ws.waitingReplies.size, 0);
-                        assert.strictEqual(Object.keys(ws.resolvesObj).length, 0);
-                        assert.strictEqual(Object.keys(ws.rejectsObj).length, 0);
-                        assert.strictEqual(Object.keys(ws.timeoutsObj).length, 0);
+                        })
+                            .then(status => {
+                                assert.strictEqual(awaitId, status);
+                                assert.strictEqual(ws.waitingReplies.size, 0);
+                                assert.strictEqual(Object.keys(ws.resolvesObj).length, 0);
+                                assert.strictEqual(Object.keys(ws.rejectsObj).length, 0);
+                                assert.strictEqual(Object.keys(ws.timeoutsObj).length, 0);
+                            })
+                            .catch(err => {
+                                throw new Error(`This test without Errors: ${err}`);
+                            });
                     };
                 });
         });
         it('resAwait with data {Object} and error in attachAwaitId', done => {
-            const wss = new WebSocketAwait.Server(
-                {port: 0},
-                () => {
-                    const ws = new WebSocketAwait(`ws://localhost:${wss.address().port}`);
-                    ws.setSettings({
-                        attachAwaitId: () => {
-                            throw new Error('Test');
-                        },
-                    });
-                    ws.onopen = async () => {
-                        try {
-                            await ws.resAwait(testData.default);
-                        } catch (err) {
-                            assert.strictEqual(ws.waitingReplies.size, 0);
-                            assert.strictEqual(Object.keys(ws.resolvesObj).length, 0);
-                            assert.strictEqual(Object.keys(ws.rejectsObj).length, 0);
-                            assert.strictEqual(Object.keys(ws.timeoutsObj).length, 0);
-                            assert.strictEqual(err.message, 'The message is not received: Test');
-                            wss.close(done);
-                        }
-                    };
-                });
-        });
-        it('resAwait with data {Object} and error in attachAwaitId using then, catch', done => {
             const wss = new WebSocketAwait.Server(
                 {port: 0},
                 () => {
