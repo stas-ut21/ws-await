@@ -1,5 +1,6 @@
 # ws-await: modification of the module [ws](https://www.npmjs.com/package/ws) to wait for a response
 
+[![Version npm](https://img.shields.io/npm/v/ws-await.svg)](https://www.npmjs.com/package/ws-await)
 [![Linux Build](https://travis-ci.org/stas-ut21/ws-await.svg?branch=master)](https://travis-ci.org/stas-ut21/ws-await)
 [![Coverage Status](https://coveralls.io/repos/github/stas-ut21/ws-await/badge.svg?branch=master)](https://coveralls.io/github/stas-ut21/ws-await?branch=master)
 
