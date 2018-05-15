@@ -7,7 +7,7 @@ ws-await adds new methods and options to the [ws](https://www.npmjs.com/package/
 specific message.
 
 **Note**: This module does not work in the browser. All the basic ws documentation is 
-[here](https://github.com/websockets/ws/blob/master/doc/ws.md). This module only adds new methods and properties 
+[here](https://github.com/websockets/ws/blob/master/README.md). This module only adds new methods and properties 
 and does not affect the old ones(except packMessage and unpackMessage methods, which can be found here).
 
 ## Table of Contents
@@ -15,10 +15,11 @@ and does not affect the old ones(except packMessage and unpackMessage methods, w
 * [Installing](#installing)
 * [WebSocketAwait settings](#websocketawait-settings)
 * [Usage examples](#usage-examples)
-  + [Send and receive a message waiting for a response](#send-and-receive-a-message-waiting-for-a-response)
-  + [Sending to two servers and waiting for messages from them using Promise.all](#sending-to-two-servers-and-waiting-for-messages-from-them-using-promise.all)
-  + [Send and receive a message waiting for a response with change attachAwaitId settings and catch Error](#send-and-receive-a-message-waiting-for-a-response-with-change-attachAwaitId-settings-and-catch-error)
-  + [Сhain from sending and receiving a message waiting for a response](#сhain-from-sending-and-receiving-a-message-waiting-for-a-response)
+  + [Simple send and receive](#simple-send-and-receive)
+  + [Sending to two servers using Promise.all](#sending-to-two-servers-using-promise.all)
+  + [With change attachAwaitId settings and catch Error](#with-change-attachawaitid-settings-and-catch-error)
+  + [Сhain from sending and receiving a message](#chain-from-sending-and-receiving-a-message)
+* [Suggestions and questions](#suggestions-and-questions)
 * [Changelog](#changelog)
 * [License](#license)
 
@@ -74,7 +75,9 @@ All methods and properties are described in detail in the [`docs`](./doc/wsAwait
 
 Examples are for informational purposes only!
 
-### Send and receive a message waiting for a response 
+### Simple send and receive
+
+Send and receive a message waiting for a response
 
 ```js
 const WebSocketAwait = require('ws-await');
@@ -102,7 +105,9 @@ ws.on('open', async () => {
 });
 ```
 
-### Sending to two servers and waiting for messages from them using Promise.all
+### Sending to two servers using Promise.all
+
+Sending to two servers and waiting for messages from them using Promise.all
 
 ```js
 const WebSocketAwait = require('ws-await');
@@ -149,7 +154,9 @@ setTimeout(async () => {
 }, 1000);
 ```
 
-### Send and receive a message waiting for a response with change attachAwaitId settings and catch Error
+### With change attachAwaitId settings and catch Error
+
+Send and receive a message waiting for a response with change attachAwaitId settings and catch Error
 
 ```js
 const WebSocketAwait = require('ws-await');
@@ -192,7 +199,7 @@ ws.on('open', async () => {
 });
 ```
 
-### Сhain from sending and receiving a message waiting for a response
+### Сhain from sending and receiving a message
 
 Send and receive a message waiting for a response. The server also sends a waiting message to another server and sends 
 it to the first server when it receives a response.
