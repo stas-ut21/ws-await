@@ -16,9 +16,9 @@ and does not affect the old ones(except packMessage and unpackMessage methods, w
 * [WebSocketAwait settings](#websocketawait-settings)
 * [Usage examples](#usage-examples)
   + [Simple send and receive](#simple-send-and-receive)
-  + [Sending to two servers using Promise.all](#sending-to-two-servers-using-promise.all)
+  + [Sending to two servers](#sending-to-two-servers)
   + [With change attachAwaitId settings and catch Error](#with-change-attachawaitid-settings-and-catch-error)
-  + [Сhain from sending and receiving a message](#chain-from-sending-and-receiving-a-message)
+  + [Сhain from sending and receiving a message](#Сhain-from-sending-and-receiving-a-message)
 * [Suggestions and questions](#suggestions-and-questions)
 * [Changelog](#changelog)
 * [License](#license)
@@ -77,7 +77,7 @@ Examples are for informational purposes only!
 
 ### Simple send and receive
 
-Send and receive a message waiting for a response
+Send and receive a message waiting for a response.
 
 ```js
 const WebSocketAwait = require('ws-await');
@@ -105,9 +105,9 @@ ws.on('open', async () => {
 });
 ```
 
-### Sending to two servers using Promise.all
+### Sending to two servers
 
-Sending to two servers and waiting for messages from them using Promise.all
+Sending to two servers and waiting for messages from them using `Promise.all()`.
 
 ```js
 const WebSocketAwait = require('ws-await');
@@ -156,7 +156,7 @@ setTimeout(async () => {
 
 ### With change attachAwaitId settings and catch Error
 
-Send and receive a message waiting for a response with change attachAwaitId settings and catch Error
+Send and receive a message waiting for a response with change attachAwaitId settings and catch `Error`.
 
 ```js
 const WebSocketAwait = require('ws-await');
