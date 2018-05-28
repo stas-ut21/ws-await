@@ -31,7 +31,7 @@
   },
   "homepage": "https://github.com/stas-ut21/ws-await",
   "dependencies": {
-    "ws": "^5.1.1"
+    "ws": "^5.2.0"
   },
   "devDependencies": {
     "eslint": "^4.19.1",
