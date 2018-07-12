@@ -1,6 +1,6 @@
 {
   "name": "ws-await",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Modification of the module ws to wait for a response",
   "keywords": [
     "WebSocket",
@@ -31,7 +31,7 @@
   },
   "homepage": "https://github.com/stas-ut21/ws-await",
   "dependencies": {
-    "ws": "^5.2.1"
+    "ws": "^5.2.2"
   },
   "devDependencies": {
     "eslint": "^4.19.1",
