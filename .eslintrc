@@ -2,8 +2,7 @@
   "parserOptions": {
     "ecmaVersion": 8,
     "ecmaFeatures": {
-      "impliedStrict": true,
-      "experimentalObjectRestSpread": true
+      "impliedStrict": true
     }
   },
   "extends": [
