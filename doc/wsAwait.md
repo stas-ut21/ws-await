@@ -1,13 +1,30 @@
 # ws
 
-Here we will consider only updates `Class: WebSocketAwait` as `Class: WebSocket.Server` uses it.
+Here we will consider only updates `Class: WebSocketAwait` as `Class: WebSocket.Server` uses it. 
+`Class: WebSocket.Server` supports all options and methods described below!
 
-**Note**: All the basic ws documentation is [here](https://github.com/websockets/ws/blob/master/doc/ws.md).This module
- only adds new methods and properties and does not affect 
-the old ones(except packMessage and unpackMessage methods, which can be found here).
+**Note**: All the basic ws documentation is [here](https://github.com/websockets/ws/blob/master/doc/ws.md).This module 
+only adds new methods and properties and does not affect the old ones(except `send` method - it became asynchronous).
 
 ## Class: WebSocketAwait
 
+This class represents a WebSocket server. It extends the `WebSocket` class. The following describes the add-ons! 
+Full support for the old api!
+
+### new WebSocket(address[, protocols][, options])
+
+- `options` {Object}
+    - `awaitTimeout` {Number} The timeout waiting for a response.
+    - `leaveAwaitId` {Boolean} Whether to leave the identification parameter in the receiving data.
+    - `packMessage` {Function|Null} The message packaging function before sending.
+    - `unpackMessage` {Function|Null} The message un'packaging function after receiving.
+    - `generateAwaitId` {Function} The identification parameter generation function for sendAwait.
+    - `attachAwaitId` {Function} The function to installation identification parameter to sending messages.
+    - `extractAwaitId` {Function|Null} The function to extract identification parameter from incoming messages.
+    - `deleteAwaitId` {Function} The function to delete identification parameter from incoming messages.
+    
+If `protocols` is `Object` that `options` equal `protocols`!
+ 
 ### Event: 'messageAwait'
 
 - `data` {*}
@@ -16,22 +33,11 @@ the old ones(except packMessage and unpackMessage methods, which can be found he
 Emitted when a message is received from the server but resolution is not found by `awaitId`. The type of `data` is 
 unknown, as it depends on you how you will unpack the message.
 
-### websocket.setSettings(opt)
+### websocket.awaitListSize
 
-- `opt` {Object} Options object.
-- `opt.awaitTimeout` {Number} The timeout waiting for a response.
-- `opt.nameAwaitId` {String} The name identification parameter for default attachAwaitId and extractAwaitId.
-- `opt.leaveAwaitId` {Boolean} Whether to leave the identification parameter in the receiving data.
-- `opt.packMessage` {Function} The message packaging function before sending.
-- `opt.unpackMessage` {Function} The message un'packaging function after receiving.
-- `opt.generateAwaitId` {Function} The identification parameter generation function for sendAwait.
-- `opt.attachAwaitId` {Function} The function to installation identification parameter to sending messages.
-- `opt.extractAwaitId` {Function} The function to extract identification parameter from incoming messages.
+Getter to get the number of awaits expected messages. May be useful for balancing.
 
-Setting module settings. Be careful: they are not checked for content, only pass type validation before they are replaced!
-Settings `attachAwaitId` and `extractAwaitId` can use `websocket.nameAwaitId`.
-
-### websocket.send(data[, options][, callback])
+### websocket.send(data[, options])
 
 - `data` {Any} The data to send (Do not forget about `packMessage`).
 - `options` {Object}
@@ -43,10 +49,9 @@ Settings `attachAwaitId` and `extractAwaitId` can use `websocket.nameAwaitId`.
     to `true` when `websocket` is not a server client.
   - `fin` {Boolean} Specifies whether `data` is the last fragment of a message or
     not. Defaults to `true`.
-- `callback` {Function} An optional callback which is invoked when `data` is
-  written out.
 
-Before shipping, checks for a `packMessage`, and if it has uses it on `data`, then sends it. Otherwise, just sends `data`.
+It became asynchronous! Before shipping, checks for a `packMessage`, and if it has uses it on `data`, then sends it. 
+Otherwise, just sends `data`.
 
 ### websocket.sendAwait(data[, options])
 
@@ -89,13 +94,6 @@ at sending.
 
 How long will the `sendAwait` method wait for a response.
 
-### Option: nameAwaitId
-
-- {String}
-
-The name identification parameter for default attachAwaitId and extractAwaitId. Settings `attachAwaitId` and 
-`extractAwaitId` can use `websocket.nameAwaitId`.
-
 ### Option: leaveAwaitId
 
 - {Boolean}
@@ -104,13 +102,13 @@ Whether to leave the identification parameter in the receiving data.
 
 ### Option: packMessage
 
-- {Function}
+- {Function|Null}
 
 The message packaging function before sending. Occurs after `attachAwaitId`.
 
 ### Option: unpackMessage
 
-- {Function}
+- {Function|Null}
 
 The message un'packaging function after receiving. Occurs before `extractAwaitId`.
 
@@ -128,6 +126,44 @@ The function to installation identification parameter to incoming messages. Occu
 
 ### Option: extractAwaitId
 
-- {Function}
+- {Function|Null}
 
 The function to extract identification parameter from incoming messages. Occurs after `unpackMessage`.
+
+### Option: deleteAwaitId
+
+- {Function|Null}
+
+The function to delete identification parameter from incoming messages. Occurs before emit `messageAwait` event. 
+
+
+### Error: WebSocketAwaitConnectionCloseError
+
+- {Error}
+
+When you close the connection, all pending messages sent will be rejected with this error.
+
+### Error: WebSocketAwaitProcessedError
+
+- {Error}
+
+This error will be returned if the received message is not processed successfully.
+
+### Error: WebSocketAwaitSendError
+
+- {Error}
+
+This error will be returned when sending failed in `sendAwait` and `resAwait` methods.(Method `Send` returns the 
+native error).
+
+### Error: WebSocketAwaitTimeoutAwaitError
+
+- {Error}
+
+This error will be returned if you do not wait for a response within the specified interval `awaitTimeout`.
+
+### Error: WebSocketAwaitValidationError
+
+- {Error}
+
+This error will be returned with invalid options (only options added within this module).

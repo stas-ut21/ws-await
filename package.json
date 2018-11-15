@@ -1,8 +1,13 @@
 {
   "name": "ws-await",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Modification of the module ws to wait for a response",
   "keywords": [
+    "ws",
+    "websocket",
+    "promise",
+    "client",
+    "protocol",
     "WebSocket",
     "WebSockets",
     "real-time",
@@ -16,7 +21,7 @@
     "lib"
   ],
   "scripts": {
-    "test": "eslint index.js lib/websocket.js && nyc --reporter=html --reporter=text mocha test/*.test.js --exit",
+    "test": "eslint ./ && nyc --reporter=html --reporter=text mocha test/*.test.js --exit",
     "lint": "eslint index.js lib/websocket.js",
     "lint-fix": "eslint --fix index.js lib/websocket.js"
   },
@@ -31,12 +36,13 @@
   },
   "homepage": "https://github.com/stas-ut21/ws-await",
   "dependencies": {
-    "ws": "^6.0.0"
+    "ws": "^6.1.0"
   },
   "devDependencies": {
-    "eslint": "^5.0.0",
+    "eslint": "^4.19.1",
     "eslint-config-google": "^0.9.1",
     "mocha": "^5.2.0",
-    "nyc": "^12.0.2"
+    "mocha-teamcity-reporter": "latest",
+    "nyc": "^11.9.0"
   }
 }
