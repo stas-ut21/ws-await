@@ -34,7 +34,7 @@ describe('WebSocketAwait', () => {
                             assert.strictEqual(ws._options.awaitTimeout, 10000);
                             wss.close(done);
                         };
-                    },
+                    }
                 );
             });
             it('leaveAwaitId option in _options', done => {
@@ -46,7 +46,7 @@ describe('WebSocketAwait', () => {
                             assert.strictEqual(ws._options.leaveAwaitId, false);
                             wss.close(done);
                         };
-                    },
+                    }
                 );
             });
             it('packMessage option in _options', done => {
@@ -58,7 +58,7 @@ describe('WebSocketAwait', () => {
                             assert.deepStrictEqual(typeof ws._options.packMessage, 'function');
                             wss.close(done);
                         };
-                    },
+                    }
                 );
             });
             it('unpackMessage option in _options', done => {
@@ -70,7 +70,7 @@ describe('WebSocketAwait', () => {
                             assert.deepStrictEqual(typeof ws._options.unpackMessage, 'function');
                             wss.close(done);
                         };
-                    },
+                    }
                 );
             });
             it('generateAwaitId option in _options', done => {
@@ -82,7 +82,7 @@ describe('WebSocketAwait', () => {
                             assert.deepStrictEqual(typeof ws._options.generateAwaitId, 'function');
                             wss.close(done);
                         };
-                    },
+                    }
                 );
             });
             it('attachAwaitId option in _options', done => {
@@ -94,7 +94,7 @@ describe('WebSocketAwait', () => {
                             assert.deepStrictEqual(typeof ws._options.attachAwaitId, 'function');
                             wss.close(done);
                         };
-                    },
+                    }
                 );
             });
             it('extractAwaitId option in _options', done => {
@@ -106,7 +106,7 @@ describe('WebSocketAwait', () => {
                             assert.deepStrictEqual(typeof ws._options.extractAwaitId, 'function');
                             wss.close(done);
                         };
-                    },
+                    }
                 );
             });
             it('deleteAwaitId option in _options', done => {
@@ -118,7 +118,7 @@ describe('WebSocketAwait', () => {
                             assert.deepStrictEqual(typeof ws._options.deleteAwaitId, 'function');
                             wss.close(done);
                         };
-                    },
+                    }
                 );
             });
             it('awaitList in _options', done => {
@@ -131,7 +131,7 @@ describe('WebSocketAwait', () => {
                             assert.strictEqual(ws.awaitListSize, 0);
                             wss.close(done);
                         };
-                    },
+                    }
                 );
             });
         });
@@ -146,7 +146,7 @@ describe('WebSocketAwait', () => {
                                 assert.deepStrictEqual(typeof ws._options.generateAwaitId(), 'string');
                                 wss.close(done);
                             };
-                        },
+                        }
                     );
                 });
                 it('generateAwaitId without args', done => {
@@ -158,7 +158,7 @@ describe('WebSocketAwait', () => {
                                 assert.deepStrictEqual(typeof ws._options.generateAwaitId(testData.default), 'string');
                                 wss.close(done);
                             };
-                        },
+                        }
                     );
                 });
             });
@@ -171,11 +171,11 @@ describe('WebSocketAwait', () => {
                             ws.onopen = () => {
                                 assert.deepStrictEqual(
                                     ws._options.attachAwaitId(testData.default, testData.withAwaitId.awaitId),
-                                    {awaitId: '_id', foo: 1},
+                                    {awaitId: '_id', foo: 1}
                                 );
                                 wss.close(done);
                             };
-                        },
+                        }
                     );
                 });
                 it('attachAwaitId with empty data and with id {String}', done => {
@@ -186,11 +186,11 @@ describe('WebSocketAwait', () => {
                             ws.onopen = () => {
                                 assert.deepStrictEqual(
                                     ws._options.attachAwaitId({}, testData.withAwaitId.awaitId),
-                                    {awaitId: '_id'},
+                                    {awaitId: '_id'}
                                 );
                                 wss.close(done);
                             };
-                        },
+                        }
                     );
                 });
                 it('attachAwaitId without data and without id', done => {
@@ -201,11 +201,11 @@ describe('WebSocketAwait', () => {
                             ws.onopen = () => {
                                 assert.deepStrictEqual(
                                     ws._options.attachAwaitId(),
-                                    {awaitId: undefined},
+                                    {awaitId: undefined}
                                 );
                                 wss.close(done);
                             };
-                        },
+                        }
                     );
                 });
             });
@@ -218,11 +218,11 @@ describe('WebSocketAwait', () => {
                             ws.onopen = () => {
                                 assert.deepStrictEqual(
                                     ws._options.extractAwaitId(testData.withAwaitId),
-                                    testData.withAwaitId.awaitId,
+                                    testData.withAwaitId.awaitId
                                 );
                                 wss.close(done);
                             };
-                        },
+                        }
                     );
                 });
                 it('extractAwaitId with data {Object} without key awaitId', done => {
@@ -233,12 +233,12 @@ describe('WebSocketAwait', () => {
                             ws.onopen = () => {
                                 assert.strictEqual(
                                     ws._options.extractAwaitId(testData.default),
-                                    false,
+                                    false
                                 );
                                 wss.close(done);
                             };
 
-                        },
+                        }
                     );
                 });
                 it('extractAwaitId without data', done => {
@@ -249,11 +249,11 @@ describe('WebSocketAwait', () => {
                             ws.onopen = () => {
                                 assert.strictEqual(
                                     ws._options.extractAwaitId(),
-                                    undefined,
+                                    undefined
                                 );
                                 wss.close(done);
                             };
-                        },
+                        }
                     );
                 });
             });
@@ -277,13 +277,13 @@ describe('WebSocketAwait', () => {
                         };
                         const ws = new WebSocketAwait(`ws://localhost:${wss.address().port}`, testOptions);
                         ws.onopen = () => {
-                            assert.strict(
+                            assert.deepStrictEqual(
                                 ws._options,
-                                testOptions,
+                                testOptions
                             );
                             wss.close(done);
                         };
-                    },
+                    }
                 );
             });
             it('setting invalid option awaitTimeout in Client', () => {
@@ -296,9 +296,9 @@ describe('WebSocketAwait', () => {
                                     awaitTimeout: true,
                                 });
                             },
-                            /^WebSocketAwaitValidationError: The "awaitTimeout" argument must be of type number. Received type boolean$/,
+                            /^WebSocketAwaitValidationError: The "awaitTimeout" argument must be of type number. Received type boolean$/
                         );
-                    },
+                    }
                 );
             });
         });
@@ -315,8 +315,8 @@ describe('WebSocketAwait', () => {
                         });
                     });
                     const ws = new WebSocketAwait(`ws://localhost:${wss.address().port}`);
-                    ws.onopen = async () => {
-                        await ws.send(testData.default);
+                    ws.onopen = () => {
+                        ws.send(testData.default);
                     };
                 });
         });
@@ -334,8 +334,8 @@ describe('WebSocketAwait', () => {
                         });
                     });
                     const ws = new WebSocketAwait(`ws://localhost:${wss.address().port}`);
-                    ws.onopen = async () => {
-                        await ws.send(testData.default);
+                    ws.onopen = () => {
+                        ws.send(testData.default);
                     };
                 });
         });
@@ -353,8 +353,8 @@ describe('WebSocketAwait', () => {
                         });
                     });
                     const ws = new WebSocketAwait(`ws://localhost:${wss.address().port}`, {packMessage: null});
-                    ws.onopen = async () => {
-                        await ws.send(testData.defaultJSON);
+                    ws.onopen = () => {
+                        ws.send(testData.defaultJSON);
                     };
                 });
         });
@@ -373,8 +373,8 @@ describe('WebSocketAwait', () => {
                         });
                     });
                     const ws = new WebSocketAwait(`ws://localhost:${wss.address().port}`, {packMessage: null});
-                    ws.onopen = async () => {
-                        await ws.send();
+                    ws.onopen = () => {
+                        ws.send();
                     };
                 });
         });
@@ -388,7 +388,7 @@ describe('WebSocketAwait', () => {
                         () => {
                             throw error;
                         },
-                        /^Error: WebSocket is not open: readyState 0 \(CONNECTING\)$/,
+                        /^Error: WebSocket is not open: readyState 0 \(CONNECTING\)$/
                     );
                 });
             ws.send(testData.default)
@@ -396,7 +396,7 @@ describe('WebSocketAwait', () => {
                     assert.ok(error instanceof Error);
                     assert.strictEqual(
                         error.message,
-                        'WebSocket is not open: readyState 0 (CONNECTING)',
+                        'WebSocket is not open: readyState 0 (CONNECTING)'
                     );
                 });
             ws.send(testData.default, {test: 'test'})
@@ -404,7 +404,7 @@ describe('WebSocketAwait', () => {
                     assert.ok(error instanceof Error);
                     assert.strictEqual(
                         error.message,
-                        'WebSocket is not open: readyState 0 (CONNECTING)',
+                        'WebSocket is not open: readyState 0 (CONNECTING)'
                     );
                 });
             done();
@@ -424,13 +424,15 @@ describe('WebSocketAwait', () => {
                         });
                     });
                     const ws = new WebSocketAwait(`ws://localhost:${wss.address().port}`);
-                    ws.onopen = async () => {
-                        await ws.sendAwait(testData.default);
-                        for (const item of ws._awaitList) {
-                            assert.strictEqual(typeof item[0], 'string');
-                            assert.deepStrictEqual(Object.keys(item[1]), ['resolve', 'reject', 'timeout']);
-                        }
-                        assert.strictEqual(ws.awaitListSize, 1);
+                    ws.onopen = () => {
+                        ws.sendAwait(testData.default)
+                            .then(() => {
+                                for (const item of ws._awaitList) {
+                                    assert.strictEqual(typeof item[0], 'string');
+                                    assert.deepStrictEqual(Object.keys(item[1]), ['resolve', 'reject', 'timeout']);
+                                }
+                                assert.strictEqual(ws.awaitListSize, 1);
+                            })
                     };
                 });
         });
@@ -447,16 +449,18 @@ describe('WebSocketAwait', () => {
                         });
                     });
                     const ws = new WebSocketAwait(`ws://localhost:${wss.address().port}`);
-                    ws.onopen = async () => {
+                    ws.onopen = () => {
                         ws.on('messageAwait', (msg, id) => {
                             throw new Error('The event should not fire if there is a resolve object');
                         });
-                        await ws.sendAwait(testData.default);
-                        for (const item of ws._awaitList) {
-                            assert.strictEqual(typeof item[0], 'string');
-                            assert.deepStrictEqual(Object.keys(item[1]), ['resolve', 'reject', 'timeout']);
-                        }
-                        assert.strictEqual(ws.awaitListSize, 1);
+                        ws.sendAwait(testData.default)
+                            .then(() => {
+                                for (const item of ws._awaitList) {
+                                    assert.strictEqual(typeof item[0], 'string');
+                                    assert.deepStrictEqual(Object.keys(item[1]), ['resolve', 'reject', 'timeout']);
+                                }
+                                assert.strictEqual(ws.awaitListSize, 1);
+                            })
                     };
                 });
         });
@@ -473,15 +477,16 @@ describe('WebSocketAwait', () => {
                         });
                     });
                     const ws = new WebSocketAwait(`ws://localhost:${wss.address().port}`);
-                    ws.onopen = async () => {
-                        await ws.sendAwait(testData.default, () => {
+                    ws.onopen = () => {
+                        ws.sendAwait(testData.default, () => {
                             throw new Error('Callback is passed to sendAwait method');
+                        }).then(() => {
+                            for (const item of ws._awaitList) {
+                                assert.strictEqual(typeof item[0], 'string');
+                                assert.deepStrictEqual(Object.keys(item[1]), ['resolve', 'reject', 'timeout']);
+                            }
+                            assert.strictEqual(ws.awaitListSize, 1);
                         });
-                        for (const item of ws._awaitList) {
-                            assert.strictEqual(typeof item[0], 'string');
-                            assert.deepStrictEqual(Object.keys(item[1]), ['resolve', 'reject', 'timeout']);
-                        }
-                        assert.strictEqual(ws.awaitListSize, 1);
                     };
                 });
         });
@@ -498,13 +503,15 @@ describe('WebSocketAwait', () => {
                         });
                     });
                     const ws = new WebSocketAwait(`ws://localhost:${wss.address().port}`);
-                    ws.onopen = async () => {
-                        await ws.sendAwait(testData.default, {});
-                        for (const item of ws._awaitList) {
-                            assert.strictEqual(typeof item[0], 'string');
-                            assert.deepStrictEqual(Object.keys(item[1]), ['resolve', 'reject', 'timeout']);
-                        }
-                        assert.strictEqual(ws.awaitListSize, 1);
+                    ws.onopen = () => {
+                        ws.sendAwait(testData.default, {})
+                            .then(() => {
+                                for (const item of ws._awaitList) {
+                                    assert.strictEqual(typeof item[0], 'string');
+                                    assert.deepStrictEqual(Object.keys(item[1]), ['resolve', 'reject', 'timeout']);
+                                }
+                                assert.strictEqual(ws.awaitListSize, 1);
+                            });
                     };
                 });
         });
