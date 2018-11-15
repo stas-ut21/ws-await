@@ -2,7 +2,8 @@
   "parserOptions": {
     "ecmaVersion": 8,
     "ecmaFeatures": {
-      "impliedStrict": true
+      "impliedStrict": true,
+      "experimentalObjectRestSpread": true
     }
   },
   "extends": [
@@ -199,12 +200,6 @@
     ],
     "no-new-require": [
       "error"
-    ],
-    "no-param-reassign": [
-      "error",
-      {
-        "props": false
-      }
     ],
     "no-prototype-builtins": [
       "error"

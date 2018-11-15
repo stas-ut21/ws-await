@@ -9,51 +9,58 @@ specific message.
 
 **Note**: This module does not work in the browser. All the basic ws documentation is 
 [here](https://github.com/websockets/ws/blob/master/README.md). This module only adds new methods and properties 
-and does not affect the old ones(except packMessage and unpackMessage methods, which can be found here).
+and does not affect the old ones(except Send method - it became asynchronous).
 
 ## Table of Contents
 
 * [Installing](#installing)
-* [WebSocketAwait settings](#websocketawait-settings)
+* [API docs](#api-docs)
+* [WebSocketAwait options](#websocket-await-options)
 * [Usage examples](#usage-examples)
   + [Simple send and receive](#simple-send-and-receive)
   + [Sending to two servers](#sending-to-two-servers)
   + [With change attachAwaitId settings and catch Error](#with-change-attachawaitid-settings-and-catch-error)
-  + [Сhain from sending and receiving a message](#Сhain-from-sending-and-receiving-a-message)
+  + [Сhain from sending and receiving a message](#chain-from-sending-and-receiving-a-message)
 * [Suggestions and questions](#suggestions-and-questions)
 * [Changelog](#changelog)
 * [License](#license)
 
-## Installing
+## <a name="installing">Installing</a>
 
 ```
-npm install --save ws-await
+npm install ws-await
 ```
 
-## API docs
+## <a name="api-docs">API docs</a>
 
 See [`/doc/ws.md`](./doc/wsAwait.md) to view detailed information.
 
-## WebSocketAwait settings
+## <a name="websocket-await-options">WebSocketAwait options</a>
 
 New methods and options have been added to this module. Be careful when using them: read the
  [`API documentation`](./doc/wsAwait.md) carefully.
 
-The module includes several settings and options for convenient operation. The method responsible for their installation
- is called `setSettings`. Use only this method to set the settings and options. Below is an example work `setSettings`:
+The module includes several settings and options for convenient operation. All options are passed as options(for both 
+`client` and `server`):
  
 ```js
-ws.setSettings({
-    awaitTimeout: 10,
-    leaveAwaitId: true,
-    nameAwaitId: 'awaitId',
+const WebSocketAwait = require('ws-await');
+
+const options = {
+    awaitTimeout: 10000,
+    leaveAwaitId: false,
     packMessage: data => JSON.stringify(data),
     unpackMessage: data => JSON.parse(data),
-    generateAwaitId: () => `_${Math.random().toString(36).substr(2, 10)}`,
-    attachAwaitId: (data, id) => Object.assign({[this.nameAwaitId]: id}, data),
+    generateAwaitId: () => `_${Math.random()
+        .toString(36)
+        .substr(2, 10)}`,
+    attachAwaitId: (data, id) => Object.assign({awaitId: id}, data),
     extractAwaitId: data => data &&
-    Object.prototype.hasOwnProperty.call(data, this.nameAwaitId) && data[this.nameAwaitId],
-});
+        Object.prototype.hasOwnProperty.call(data, 'awaitId') && data.awaitId,
+    deleteAwaitId: data => delete data.awaitId,
+};
+const wss = new WebSocketAwait.Server({port: 5050, ...options});
+const ws = new WebSocketAwait(`ws://localhost:5050`, options);
 ```
 
 All settings and options presented above are set by default. Please consider this. For example, the `package 
@@ -64,19 +71,28 @@ immediately before the message event is triggered. To disable these two methods 
 use the `setSettings` method and set the values of these methods to `null`. Disabling works only on these two methods!
 
 ```js
-ws.setSettings({
+const options = {
     packMessage: null,
     unpackMessage: null,
-});
+}
+```
+
+If you do not want to use the sendAwait and resAwait methods, set `extractAwaitId` to `null`(due to the fact that there 
+will be no checks for the presence of the `awaitId`(default) key , performance will be improved).
+
+```js
+const options = {
+    extractAwaitId: null,
+}
 ```
 
 All methods and properties are described in detail in the [`docs`](./doc/wsAwait.md).
 
-## Usage examples
+## <a name="usage-examples">Usage examples</a>
 
 Examples are for informational purposes only!
 
-### Simple send and receive
+### <a name="simple-send-and-receive">Simple send and receive</a>
 
 Send and receive a message waiting for a response.
 
@@ -106,7 +122,7 @@ ws.on('open', async () => {
 });
 ```
 
-### Sending to two servers
+### <a name="sending-to-two-servers">Sending to two servers</a>
 
 Sending to two servers and waiting for messages from them using `Promise.all()`.
 
@@ -155,7 +171,7 @@ setTimeout(async () => {
 }, 1000);
 ```
 
-### With change attachAwaitId settings and catch Error
+### <a name="with-change-attachawaitid-settings-and-catch-error">With change attachAwaitId settings and catch Error</a>
 
 Send and receive a message waiting for a response with change attachAwaitId settings and catch `Error`.
 
@@ -163,24 +179,22 @@ Send and receive a message waiting for a response with change attachAwaitId sett
 const WebSocketAwait = require('ws-await');
 
 const wss = new WebSocketAwait.Server({
-    port: 8080
+    port: 8080,
 });
 
 wss.on('connection', ws => {
     ws.on('messageAwait', (msg, id) => {
         console.log(`Server get messageAwait <<< ${msg.foo} and ${id}`);
         ws.resAwait({
-            bar: 'foo'
+            bar: 'foo',
         }, id);
     });
 });
 
-const ws = new WebSocketAwait('ws://localhost:8080');
-
-ws.setSettings({
+const ws = new WebSocketAwait('ws://localhost:8080', {
     attachAwaitId: (data, id) => {
         if (typeof data === 'object') {
-            return Object.assign({[ws.nameAwaitId]: id}, data);
+            return Object.assign({awaitId: id}, data);
         }
         throw new Error('Data is not object');
     },
@@ -189,7 +203,7 @@ ws.setSettings({
 ws.on('open', async () => {
     try {
         const waitingOne = await ws.sendAwait({
-            foo: 'bar'
+            foo: 'bar',
         });
         console.log(`Client get waiting <<< ${waitingOne.bar}`);
         const waitingTwo = await ws.sendAwait(10);
@@ -200,7 +214,7 @@ ws.on('open', async () => {
 });
 ```
 
-### Сhain from sending and receiving a message
+### <a name="chain-from-sending-and-receiving-a-message">Сhain from sending and receiving a message</a>
 
 Send and receive a message waiting for a response. The server also sends a waiting message to another server and sends 
 it to the first server when it receives a response.
@@ -249,15 +263,15 @@ wsOne.on('open', async () => {
 });
 ```
 
-## Suggestions and questions
+## <a name="suggestions-and-questions">Suggestions and questions</a>
 
 Send your suggestions and questions on [GitHub](https://github.com/stas-ut21/ws-await/issues) or send to email.
-`stas.ut21@gmail.com`
+`stas.ut21@gmail.com`.
 
-## Changelog
+## <a name="changelog">Changelog</a>
 
 We're using the GitHub [releases](https://github.com/stas-ut21/ws-await/releases) for changelog entries.
 
-## License
+## <a name="license">License</a>
 
 [MIT](LICENSE)
