@@ -382,32 +382,21 @@ describe('WebSocketAwait', () => {
             const ws = new WebSocketAwait('ws://localhost', {
                 agent: new CustomAgent(),
             });
+
+            ws.readyState = WebSocketAwait.CLOSING;
+
             ws.send(testData.default)
-                .catch(error => {
-                    assert.throws(
-                        () => {
-                            throw error;
-                        },
-                        /^Error: WebSocket is not open: readyState 0 \(CONNECTING\)$/
-                    );
-                });
-            ws.send(testData.default)
+                .then(() => {
+                    throw new Error('Test failed');
+                })
                 .catch(error => {
                     assert.ok(error instanceof Error);
                     assert.strictEqual(
                         error.message,
-                        'WebSocket is not open: readyState 0 (CONNECTING)'
+                        'WebSocket is not open: readyState 2 (CLOSING)'
                     );
+                    done();
                 });
-            ws.send(testData.default, {test: 'test'})
-                .catch(error => {
-                    assert.ok(error instanceof Error);
-                    assert.strictEqual(
-                        error.message,
-                        'WebSocket is not open: readyState 0 (CONNECTING)'
-                    );
-                });
-            done();
         });
     });
     describe('method sendAwait', () => {
