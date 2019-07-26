@@ -1,6 +1,6 @@
 {
   "name": "ws-await",
-  "version": "3.2.0",
+  "version": "4.0.0",
   "description": "Modification of the module ws to wait for a response",
   "keywords": [
     "ws",
@@ -36,12 +36,12 @@
   },
   "homepage": "https://github.com/stas-ut21/ws-await",
   "dependencies": {
-    "ws": "^6.2.0"
+    "ws": "7.1.1"
   },
   "devDependencies": {
-    "eslint": "^5.16.0",
-    "eslint-config-google": "^0.12.0",
-    "mocha": "^5.2.0",
-    "nyc": "^14.0.0"
+    "eslint": "5.16.0",
+    "eslint-config-google": "0.12.0",
+    "mocha": "5.2.0",
+    "nyc": "14.1.1"
   }
 }
