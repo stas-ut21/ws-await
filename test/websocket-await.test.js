@@ -303,6 +303,52 @@ describe('WebSocketAwait', () => {
             });
         });
     });
+    describe('method setAwaitTimeout', () => {
+        it('checking whether the value has changed (Server)', done => {
+            const wss = new WebSocketAwait.Server({port: 0});
+
+            wss.setAwaitTimeout(5555);
+
+            assert.strictEqual(wss.options.awaitTimeout, 5555);
+
+            done();
+        });
+        it('checking the new one timeout argument validating (Server)', () => {
+            assert.throws(
+                () => {
+                    const wss = new WebSocketAwait.Server({port: 0});
+
+                    wss.setAwaitTimeout('5555');
+                },
+                /^WebSocketAwaitValidationError: The "awaitTimeout" argument must be of type number. Received type string$/
+            );
+        });
+        it('checking whether the value has changed (Client)', done => {
+            const wss = new WebSocketAwait.Server(
+                {port: 0},
+                () => {
+                    const ws = new WebSocketAwait(`ws://localhost:${wss.address().port}`);
+
+                    ws.setAwaitTimeout(5555);
+
+                    assert.strictEqual(ws._options.awaitTimeout, 5555);
+
+                    done();
+                });
+        });
+        it('checking the new one timeout argument validating (Client)', () => {
+            assert.throws(
+                () => {
+                    const wss = new WebSocketAwait.Server({port: 0});
+
+                    const ws = new WebSocketAwait(`ws://localhost:${wss.address().port}`);
+
+                    ws.setAwaitTimeout('5555');
+                },
+                /^WebSocketAwaitValidationError: The "awaitTimeout" argument must be of type number. Received type string$/
+            );
+        });
+    });
     describe('method send', () => {
         it('send with data {Object}', done => {
             const wss = new WebSocketAwait.Server(

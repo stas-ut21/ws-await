@@ -37,6 +37,12 @@ unknown, as it depends on you how you will unpack the message.
 
 Getter to get the number of awaits expected messages. May be useful for balancing.
 
+### websocket.setAwaitTimeout(awaitTimeout)
+
+- `awaitTimeout` {Number} The timeout waiting for a response.
+
+Method for update `awaitTimeout` option after create class instance.
+
 ### websocket.send(data[, options])
 
 - `data` {Any} The data to send (Do not forget about `packMessage`).
