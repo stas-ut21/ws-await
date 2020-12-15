@@ -39,9 +39,9 @@
     "ws": "7.4.1"
   },
   "devDependencies": {
-    "eslint": "7.15.0",
+    "eslint": "6.8.0",
     "eslint-config-google": "0.14.0",
-    "mocha": "8.2.1",
+    "mocha": "7.2.0",
     "nyc": "15.1.0"
   }
 }
