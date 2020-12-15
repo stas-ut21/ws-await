@@ -429,7 +429,7 @@ describe('WebSocketAwait', () => {
                 agent: new CustomAgent(),
             });
 
-            ws.readyState = WebSocketAwait.CLOSING;
+            ws._readyState = WebSocketAwait.CLOSING;
 
             ws.send(testData.default)
                 .then(() => {
