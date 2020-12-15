@@ -1,3 +1,12 @@
+**December 15, 2020 —** [**Docs**](https://github.com/stas-ut21/ws-await/blob/v4.2.0/README.md)
+
+- Upgrade ws to 7.4.1
+- Upgrade mocha to 7.2.0
+- Upgrade nyc to 15.1.0
+- Update `.travis.yml` for NodeJS 14
+- Update package-lock.json
+- Upgrade `completeUpgrade` method in `websocket-server.js`
+
 **March 26, 2020 —** [**Docs**](https://github.com/stas-ut21/ws-await/blob/v4.1.0/README.md)
 
 - Upgrade ws to 7.2.3
