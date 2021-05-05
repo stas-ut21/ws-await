@@ -11,6 +11,8 @@ specific message.
 [here](https://github.com/websockets/ws/blob/master/README.md). This module only adds new methods and properties 
 and does not affect the old ones(except Send method - it became asynchronous).
 
+> This module has Typescript definitions!
+
 ## Table of Contents
 
 * [Installing](#installing)

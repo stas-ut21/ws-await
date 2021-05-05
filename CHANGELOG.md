@@ -1,3 +1,15 @@
+**May 5, 2021 —** [**Docs**](https://github.com/stas-ut21/ws-await/blob/v4.2.2/README.md)
+
+- Add Typescript definitions!
+- Upgrade ws to 7.4.5
+- Upgrade eslint to 7.25.0
+- Upgrade mocha to 8.3.2
+- Default `generateAwaitId` option now use `crypto` module
+- Change `package-lock.json` to 2 version
+- Fix some JSDOC bugs in `websocket.js`
+- Update `.travis.yml` add NodeJS 15
+- Update `.travis.yml`: drop NodeJS 8,9
+
 **February 15, 2021 —** [**Docs**](https://github.com/stas-ut21/ws-await/blob/v4.2.1/README.md)
 
 - Upgrade ws to 7.4.3
