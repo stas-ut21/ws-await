@@ -1,3 +1,7 @@
+**May 5, 2021 —** [**Docs**](https://github.com/stas-ut21/ws-await/blob/v4.2.3/README.md)
+
+- Hot fix: add `index.d.ts` for files in pack
+
 **May 5, 2021 —** [**Docs**](https://github.com/stas-ut21/ws-await/blob/v4.2.2/README.md)
 
 - Add Typescript definitions!
