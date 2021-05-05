@@ -7,7 +7,8 @@
 - Default `generateAwaitId` option now use `crypto` module
 - Change `package-lock.json` to 2 version
 - Fix some JSDOC bugs in `websocket.js`
-- Update `.travis.yml` for NodeJS 15
+- Update `.travis.yml` add NodeJS 15
+- Update `.travis.yml`: drop NodeJS 8,9
 
 **February 15, 2021 —** [**Docs**](https://github.com/stas-ut21/ws-await/blob/v4.2.1/README.md)
 
