@@ -11,7 +11,7 @@ only adds new methods and properties and does not affect the old ones(except `se
 This class represents a WebSocket server. It extends the `WebSocket` class. The following describes the add-ons! 
 Full support for the old api!
 
-### new WebSocket(address[, protocols][, options])
+### new WebSocketAwait(address[, protocols][, options])
 
 - `options` {Object}
     - `awaitTimeout` {Number} The timeout waiting for a response.
