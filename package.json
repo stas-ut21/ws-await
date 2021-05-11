@@ -39,6 +39,7 @@
   "dependencies": {
     "ws": "7.4.5"
   },
+  "types": "./index.d.ts",
   "devDependencies": {
     "@types/ws": "7.4.2",
     "eslint": "7.25.0",
