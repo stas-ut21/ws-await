@@ -76,11 +76,23 @@ declare class WebSocketAwait extends events.EventEmitter {
     send(data: any, cb?: (err?: Error) => void): Promise<void>;
     send(data: any, options: { mask?: boolean; binary?: boolean; compress?: boolean; fin?: boolean }, cb?: (err?: Error) => void): Promise<void>;
 
-    sendAwait(data: any, options?: { mask?: boolean; binary?: boolean; compress?: boolean; fin?: boolean }): Promise<any | WebSocketAwait.WebSocketAwaitTimeoutAwaitError | WebSocketAwait.WebSocketAwaitSendError | WebSocketAwait.WebSocketAwaitProcessedError>;
+    /**
+     * @throws WebSocketAwait.WebSocketAwaitTimeoutAwaitError
+     * @throws WebSocketAwait.WebSocketAwaitSendError
+     * @throws WebSocketAwait.WebSocketAwaitProcessedError
+     */
+    sendAwait<T = any>(data: any, options?: { mask?: boolean; binary?: boolean; compress?: boolean; fin?: boolean }): Promise<T>;
 
-    resAwait(data: any, awaitId: any, options?: { mask?: boolean; binary?: boolean; compress?: boolean; fin?: boolean }): Promise<any | WebSocketAwait.WebSocketAwaitSendError | WebSocketAwait.WebSocketAwaitProcessedError>;
+    /**
+     * @throws WebSocketAwait.WebSocketAwaitSendErro
+     * @throws WebSocketAwait.WebSocketAwaitProcessedError
+     */
+    resAwait(data: any, awaitId: any, options?: { mask?: boolean; binary?: boolean; compress?: boolean; fin?: boolean }): Promise<any>;
 
-    static validateOptions(options: Partial<Pick<WebSocketAwait.ClientOptions, ('awaitTimeout' | 'leaveAwaitId' | 'packMessage' | 'unpackMessage' | 'generateAwaitId' | 'attachAwaitId' | 'extractAwaitId' | 'deleteAwaitId')>>): void | WebSocketAwait.WebSocketAwaitValidationError;
+    /**
+     * @throws {WebSocketAwait.WebSocketAwaitValidationError} if validation error
+     */
+    static validateOptions(options: Partial<Pick<WebSocketAwait.ClientOptions, ('awaitTimeout' | 'leaveAwaitId' | 'packMessage' | 'unpackMessage' | 'generateAwaitId' | 'attachAwaitId' | 'extractAwaitId' | 'deleteAwaitId')>>): void;
 
     terminate(): void;
 
@@ -116,7 +128,7 @@ declare class WebSocketAwait extends events.EventEmitter {
     on(event: 'close', listener: (this: WebSocketAwait, code: number, reason: string) => void): this;
     on(event: 'error', listener: (this: WebSocketAwait, err: Error) => void): this;
     on(event: 'upgrade', listener: (this: WebSocketAwait, request: http.IncomingMessage) => void): this;
-    on(event: 'message', listener: (this: WebSocketAwait, data: WebSocketAwait.Data) => void): this;
+    on<T = WebSocketAwait.Data>(event: 'message', listener: (this: WebSocketAwait, data: T) => void): this;
     on(event: 'open', listener: (this: WebSocketAwait) => void): this;
     on(event: 'ping' | 'pong', listener: (this: WebSocketAwait, data: Buffer) => void): this;
     on(event: 'unexpected-response', listener: (this: WebSocketAwait, request: http.ClientRequest, response: http.IncomingMessage) => void): this;
@@ -125,7 +137,7 @@ declare class WebSocketAwait extends events.EventEmitter {
     once(event: 'close', listener: (this: WebSocketAwait, code: number, reason: string) => void): this;
     once(event: 'error', listener: (this: WebSocketAwait, err: Error) => void): this;
     once(event: 'upgrade', listener: (this: WebSocketAwait, request: http.IncomingMessage) => void): this;
-    once(event: 'message', listener: (this: WebSocketAwait, data: WebSocketAwait.Data) => void): this;
+    once<T = WebSocketAwait.Data>(event: 'message', listener: (this: WebSocketAwait, data: T) => void): this;
     once(event: 'open', listener: (this: WebSocketAwait) => void): this;
     once(event: 'ping' | 'pong', listener: (this: WebSocketAwait, data: Buffer) => void): this;
     once(event: 'unexpected-response', listener: (this: WebSocketAwait, request: http.ClientRequest, response: http.IncomingMessage) => void): this;
@@ -134,7 +146,7 @@ declare class WebSocketAwait extends events.EventEmitter {
     off(event: 'close', listener: (this: WebSocketAwait, code: number, reason: string) => void): this;
     off(event: 'error', listener: (this: WebSocketAwait, err: Error) => void): this;
     off(event: 'upgrade', listener: (this: WebSocketAwait, request: http.IncomingMessage) => void): this;
-    off(event: 'message', listener: (this: WebSocketAwait, data: WebSocketAwait.Data) => void): this;
+    off<T = WebSocketAwait.Data>(event: 'message', listener: (this: WebSocketAwait, data: T) => void): this;
     off(event: 'open', listener: (this: WebSocketAwait) => void): this;
     off(event: 'ping' | 'pong', listener: (this: WebSocketAwait, data: Buffer) => void): this;
     off(event: 'unexpected-response', listener: (this: WebSocketAwait, request: http.ClientRequest, response: http.IncomingMessage) => void): this;
@@ -143,7 +155,7 @@ declare class WebSocketAwait extends events.EventEmitter {
     addListener(event: 'close', listener: (code: number, message: string) => void): this;
     addListener(event: 'error', listener: (err: Error) => void): this;
     addListener(event: 'upgrade', listener: (request: http.IncomingMessage) => void): this;
-    addListener(event: 'message', listener: (data: WebSocketAwait.Data) => void): this;
+    addListener<T = WebSocketAwait.Data>(event: 'message', listener: (data: T) => void): this;
     addListener(event: 'open', listener: () => void): this;
     addListener(event: 'ping' | 'pong', listener: (data: Buffer) => void): this;
     addListener(event: 'unexpected-response', listener: (request: http.ClientRequest, response: http.IncomingMessage) => void): this;
