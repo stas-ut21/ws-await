@@ -37,7 +37,7 @@
   },
   "homepage": "https://github.com/stas-ut21/ws-await",
   "dependencies": {
-    "ws": "7.4.5"
+    "ws": "7.4.6"
   },
   "devDependencies": {
     "@types/ws": "7.4.2",
